@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xml-properties identifier="DatabaseProperties" module-name="mmi_portal" >
+	<app-property-list>
+		<app-property name="searchPageSizeDefault" value="10"/>
+	</app-property-list>
+	<app-property-sub-modules-list>
+		<app-property-sub-module sub-module="userProfileQuery">
+			<app-property-list>
+				<!-- UI related properties... -->
+				<!-- Ex:  Name/Value translates to Name = "invoice.search.invoiceNumber" and value="Invoice#" -->
+				<app-property name="basic.search.by.email" value="SELECT * FROM mmi_portal.t_user_profile where email = ?"/>
+				<app-property name="basic.search.by.userid" value="SELECT * FROM mmi_portal.t_user_profile where user_id = ? "/>
+				<app-property name="search.by.email" value="SELECT * FROM mmi_portal.t_user_profile AS a LEFT JOIN mmi_portal.t_user_customer_id_profile AS b ON ( a.email = b.email) where a.email = ?"/>
+				<app-property name="search.by.userid" value="SELECT * FROM mmi_portal.t_user_profile AS a LEFT JOIN mmi_portal.t_user_customer_id_profile AS b ON ( a.email = b.email) where a.user_id = ?"/>
+				<app-property name="search.by.criteria" value="select * FROM mmi_portal.t_user_profile AS a LEFT JOIN mmi_portal.t_user_customer_id_profile AS b ON ( a.email = b.email)"/>
+				<app-property name="insertquery" value="INSERT INTO mmi_portal.t_user_profile (uuid,user_id,first_name,last_name,sfdc_contact_id, sap_customer_id, sfdc_account_id, sales_org_id,street_2,street_name,city,zip_code,country,phone_num,email,state,user_type,org_name,active_status, org_id,cust_id_list, cust_id_access,no_group_id, created_by, created_date, last_modified_by, last_modified_date, et_enabled, et_finance_view_enabled,et_customer_id,role_list,access_level_type,group_list,time_zone, is_order_approver, needs_order_approval,use_user_group_code,sold_to_type) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"/>
+				<app-property name="updatequery" value="update mmi_portal.t_user_profile set user_id = ?, first_name=?,last_name=?,sfdc_contact_id=?,sap_customer_id= ?, sfdc_account_id= ?,sales_org_id= ?,street_2=?,city=?, zip_code=?,country=?,phone_num=?,email=?,state=?,user_type=?,org_name=?,active_status=?,org_id=?,cust_id_list=?,cust_id_access=?,no_group_id=? , created_by=?, created_date=?, last_modified_by=?, last_modified_date=?, last_login_success_time=?, last_login_failure_time=?, et_enabled = ?, et_finance_view_enabled = ?, et_customer_id = ?, role_list = ?, access_level_type = ?, group_list = ?, time_zone=?, is_order_approver = ?, needs_order_approval = ?, use_user_group_code = ?,sold_to_type = ? where user_id=?"/>
+				<app-property name="updateTimezonequery" value="update mmi_portal.t_user_profile set time_zone=? where user_id=?"/>
+				<app-property name="updateLoginActivitySuccess" value="update mmi_portal.t_user_profile set last_login_success_time=? where user_id=?"/>
+				<app-property name="deletequery" value="DELETE from mmi_portal.t_user_profile where user_id = ?"/>
+				<app-property name ="activatequery" value="update mmi_portal.t_user_profile set active_status=true where user_id = ?"/>
+				<app-property name ="deActivatequery" value="update mmi_portal.t_user_profile set active_status=false where user_id = ?"/>
+			</app-property-list>
+		</app-property-sub-module>
+
+	<!-- 	<app-property-sub-module sub-module="customerProfileQuery">
+			<app-property-list>
+				Customer Profile
+				<app-property name="query.search" value="SELECT * FROM t_user_customer_profile where customer_id IN"/>
+				<app-property name="query.search.byid" value="SELECT * FROM t_user_customer_profile where customer_id = ? and user_id = ?"/>
+				<app-property name="query.create" value="INSERT INTO mmi_portal.t_user_customer_profile( group_id,customer_id, user_id, org_id, org_name,  account_id, customer_name, customer_type, customer_access_type, street, city, region, postal_code, company_code, sales_org ) Values ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"/>
+				<app-property name="query.update" value="UPDATE mmi_portal.t_user_customer_profile set org_id = ?, org_name= ?, customer_name = ?, customer_type = ?, customer_access_type = ? where customer_id = ? and user_id = ?"/>
+				<app-property name="query.delete" value="DELETE from mmi_portal.t_user_customer_profile where user_id = ?"/>
+			</app-property-list>
+		</app-property-sub-module> -->
+		
+		<app-property-sub-module sub-module="customerIDProfileQuery">
+			<app-property-list>
+				<!-- Customer Profile -->
+				<app-property name="query.search" value="SELECT * FROM t_user_customer_id_profile where customer_id IN"/>
+				<app-property name="query.search.byid" value="SELECT * FROM t_user_customer_id_profile where email = ? and group_id = ?"/>
+				<app-property name="query.create" value="INSERT INTO mmi_portal.t_user_customer_id_profile( group_id,customer_id, email, org_id, org_name,  account_id, customer_name, customer_type, customer_access_type, street, city, region, postal_code, company_code, sales_org ) Values ( ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)"/>
+				<app-property name="query.update" value="UPDATE mmi_portal.t_user_customer_id_profile set org_id = ?, org_name= ?, customer_name = ?, customer_type = ?, customer_access_type = ? where customer_id = ? and user_id = ?"/>
+				<app-property name="query.delete" value="DELETE from mmi_portal.t_user_customer_id_profile where email = ?"/>
+			</app-property-list>
+		</app-property-sub-module>
+		<!-- user group -->
+		<app-property-sub-module sub-module="userGroupQuery">
+			<app-property-list>
+				<app-property name="query.search" value="SELECT * from mmi_portal.t_user_customer_set_profile where email = ?"/>
+				<app-property name="query.create" value="INSERT INTO mmi_portal.t_user_customer_set_profile ( email, group_code, set_name,all_in_group, set_description, user_group_type, is_group_code, sold_to_list, all_enabled_for_ordering, default_soldto_order, default_soldto_common) VALUES ( ?,?,?,?,?,?,?,?,?,?,?)"/>
+				<app-property name="query.update" value="UPDATE mmi_portal.t_user_customer_set_profile set set_name = ?, group_code=?, all_in_group=?, set_description = ?, user_group_type=?, is_group_code = ?, sold_to_list = ?, all_enabled_for_ordering = ?, default_soldto_order = ?, default_soldto_common = ? where user_customer_set_id = ?"/>
+				<app-property name="query.delete" value="DELETE FROM mmi_portal.t_user_customer_set_profile where user_customer_set_id = ?"/>
+				<app-property name="query.delete.byemail" value="DELETE FROM mmi_portal.t_user_customer_set_profile where email = ?"/>
+			</app-property-list>
+		</app-property-sub-module>
+		
+		<app-property-sub-module sub-module="orderProfileQuery">
+			<app-property-list>
+				<app-property name="query.search" value="SELECT * from mmi_portal.t_user_customer_set_profile where email = ?"/>
+				<app-property name="query.create" value="INSERT INTO mmi_portal.t_user_customer_set_profile ( email, group_code, set_name,all_in_group, set_description, user_group_type, is_group_code, sold_to_list, all_enabled_for_ordering, default_soldto_order, default_soldto_common) VALUES ( ?,?,?,?,?,?,?,?,?,?,?)"/>
+				<app-property name="query.update" value="UPDATE mmi_portal.t_user_customer_set_profile set set_name = ?, group_code=?, all_in_group=?, set_description = ?, user_group_type=?, is_group_code = ?, sold_to_list = ?, all_enabled_for_ordering = ?, default_soldto_order = ?, default_soldto_common = ? where user_customer_set_id = ?"/>
+				<app-property name="query.delete" value="DELETE FROM mmi_portal.t_user_customer_set_profile where user_customer_set_id = ?"/>
+				<app-property name="query.delete.byemail" value="DELETE FROM mmi_portal.t_user_customer_set_profile where email = ?"/>
+			</app-property-list>
+		</app-property-sub-module>
+
+		<!-- challenge Questions queries -->
+		<app-property-sub-module sub-module="challengeQuestionsQuery">
+			<app-property-list>
+				<app-property name="query.list" value="select * from mmi_portal.t_challenge_question_list"/>
+				<app-property name="user.questions.list" value="select * from mmi_portal.t_user_challenge_questions where user_id = ?"/>
+			</app-property-list>
+		</app-property-sub-module>
+		<!-- login Tracker queries -->
+		<app-property-sub-module sub-module="loginTrackerQuery">
+			<app-property-list>
+				<app-property name="query.search" value="select * from mmi_portal.t_login_tracker where email = ?"/>
+				<app-property name="query.search.criteria" value="select * from mmi_portal.t_login_tracker where email like ?"/>
+				<app-property name="query.insert" value="INSERT INTO mmi_portal.t_login_tracker (email, active_status, status, last_login_successful, num_failed_attempts, last_login_success_time, last_login_failure_time) VALUES (?,?,?,?,?,?,?)"/>
+				<app-property name="query.update" value="UPDATE mmi_portal.t_login_tracker set active_status = ?, status = ?,last_login_successful = ?, num_failed_attempts = ?, last_login_success_time = ?, last_login_failure_time = ? where email = ?"/>
+				<app-property name="query.delete" value="DELETE FROM  mmi_portal.t_login_tracker where email = ?"/>
+			</app-property-list>
+		</app-property-sub-module>
+
+		<!-- Customer order approver queries -->
+		<app-property-sub-module sub-module="customerApproverQuery">
+			<app-property-list>
+				<app-property name="query.search" value="select * from mmi_portal.t_customer_order_approvers where sold_to_list like ? and approver_list like ?"/>
+				<app-property name="query.create" value="INSERT INTO mmi_portal.t_customer_order_approvers(group_code,approval_enabled, all_in_group,approver_list, sold_to_list) values(?,?,?,?,?)"/>
+				<app-property name="query.update" value="UPDATE mmi_portal.t_customer_order_approvers set approval_enabled = ?, all_in_group = ?,approver_list =? , sold_to_list = ?, group_code = ? where approver_id = ?"/>
+				<app-property name="query.delete" value="delete from mmi_portal.t_customer_order_approvers where approver_id = ?"/>
+			</app-property-list>
+		</app-property-sub-module>
+		<!-- login activity queries -->
+		<app-property-sub-module sub-module="loginActivityQuery">
+			<app-property-list>
+				<app-property name="query.search" value="select * from mmi_portal.t_login_activity where login_id = ?"/>
+				<app-property name="query.search.by.criteria" value="SELECT a.*, b.first_name, b.last_name, b.org_name FROM mmi_portal.t_login_activity a, mmi_portal.t_user_profile b WHERE (a.login_id = b.email ) AND a.login_id LIKE ? AND b.first_name LIKE ? AND b.last_name LIKE ?  AND b.org_name LIKE ?"/>
+				<app-property name="query.create" value="INSERT INTO mmi_portal.t_login_activity(login_id, user_id, login_time, login_successful) VALUES (?,?,?,?)"/>
+				<app-property name="query.update" value="UPDATE mmi_portal.t_login_activity set login_time = ?, logout_time = ?, duration = ? where id = ?"/>
+				<app-property name="query.delete" value="delete from mmi_portal.t_login_activity where login_id = ?"/>
+			</app-property-list>
+		</app-property-sub-module>
+		
+		<!-- conditions -->
+		<app-property-sub-module sub-module="criteriaFields">
+			<app-property-list>
+				<app-property name="firstname" value="first_name"/>
+				<app-property name="lastname" value="last_name"/>
+				<app-property name="loginid" value="a.email"/>
+				<app-property name="companyName" value="b.customer_name"/>
+				<app-property name="customerId" value="b.customer_id"/>
+			</app-property-list>
+		</app-property-sub-module>
+
+		<!-- conditions -->
+		<app-property-sub-module sub-module="conditions">
+			<app-property-list>
+				<app-property name="firstname.condition" value="LIKE"/>
+				<app-property name="lastname.condition" value="LIKE"/>
+				<app-property name="loginid.condition" value="LIKE"/>
+				<app-property name="orgid.condition" value="LIKE"/>
+				<app-property name="customer.condition" value="LIKE"/>
+			</app-property-list>
+		</app-property-sub-module>
+		
+		<!-- user Profile columns mmi_portal.userProfileColumn.app-property name="" -->
+		<app-property-sub-module sub-module="userProfileColumn">
+			<app-property-list>
+				<app-property name="user.profile.userid" value="user_id"/>
+				<app-property name="user.profile.uuid" value="uuid"/>
+				<app-property name="user.profile.firstname" value="first_name"/>
+				<app-property name="user.profile.lastname" value="last_name"/>
+				<app-property name="user.profile.street2" value="street_2"/>
+				<app-property name="user.profile.city" value="city"/>
+				<app-property name="user.profile.streetname" value="street_name"/>
+				<app-property name="user.profile.gender" value="gender"/>
+				<app-property name="user.profile.role" value="user_type"/>
+				<app-property name="user.profile.email" value="email"/>
+				<app-property name="user.profile.activestatus" value="active_status"/>
+				<app-property name="user.profile.status" value="status"/>
+				<app-property name="user.profile.sapcustomerid" value="b.customer_id"/>
+				<app-property name="user.profile.salesorgid" value="sales_org_id"/>
+				<app-property name="user.profile.sfdcaccountid" value="sfdc_account_id"/>
+				<app-property name="user.profile.phonenum" value="phone_num"/>
+				<app-property name="user.profile.state" value="state"/>
+				<app-property name="user.profile.imgpath" value="img_path"/>
+				<app-property name="user.profile.image" value="image"/>
+				<app-property name="user.profile.country" value="country"/>
+				<app-property name="user.profile.zipcode" value="zip_code"/>
+				<app-property name="user.profile.createdby" value="created_by"/>
+				<app-property name="user.profile.createddate" value="created_date"/>
+				<app-property name="user.profile.lastmodifiedby" value="last_modified_by"/>
+				<app-property name="user.profile.lastmodifieddate" value="last_modified_date"/>
+				<app-property name="user.profile.orgid" value="org_id"/>
+				<app-property name="user.profile.orgname" value="b.customer_name"/>
+				<app-property name="user.profile.timezone" value="time_zone"/>
+				<app-property name="user.profile.cust_id_list" value="b.customer_id"/>
+				<app-property name="user.profile.custIdAccess" value="cust_id_access"/>
+				<app-property name="user.profile.nogroupid" value="no_group_id"/>
+				<app-property name="user.profile.createdby" value="created_by"/>
+				<app-property name="user.profile.createddate" value="created_date"/>
+				<app-property name="user.profile.lastmodifieddate" value="last_modified_by"/>
+				<app-property name="user.profile.last_success_full_login" value="last_login_success_time"/>
+				<app-property name="user.profile.et_enabled" value="et_enabled"/>
+				<app-property name="user.profile.et_finance_enabled" value="et_finance_view_enabled"/>
+				<app-property name="user.profile.ets_customer_id" value="et_customer_id"/>
+				<app-property name="user.profile.driver_id" value="driver_id"/>
+				<app-property name="user.profile.is_order_approver" value="is_order_approver"/>
+				<app-property name="user.profile.needs_order_approval" value="needs_order_approval"/>
+				<app-property name="user.profile.use_user_group" value="use_user_group_code"/>
+				<app-property name="user.profile.sold_to_type"  value="sold_to_type"/>
+			</app-property-list>
+		</app-property-sub-module>
+		<!--  user_customer_profile--> 
+		<app-property-sub-module sub-module="userCustomerProfileColumn">
+			<app-property-list>
+				<app-property name="user.customer.userid" value="user_id"/>
+				<app-property name="user.customer.customerid" value="customer_id"/>
+				<app-property name="user.customer.accountid" value="account_id"/>
+				<app-property name="user.customer.orgid" value="org_id"/>
+				<app-property name="user.customer.orgname" value="org_name"/>
+				<app-property name="user.customer.name" value="customer_name"/>
+				<app-property name="user.customer.type" value="customer_type"/>
+				<app-property name="user.customer.street" value="street"/>
+				<app-property name="user.customer.city" value="city"/>
+				<app-property name="user.customer.region" value="region"/>
+				<app-property name="user.customer.postal.code" value="postal_code"/>
+				<app-property name="user.customer.company.code" value="company_code"/>
+				<app-property name="user.customer.salesorg" value="sales_org"/>
+			</app-property-list>
+		</app-property-sub-module>
+	<!-- Login Activity --> 
+		<app-property-sub-module sub-module="loginActivityColumn">
+			<app-property-list>
+				<app-property name="login.activity.loginid" value="login_id"/>
+				<app-property name="login.activity.userid" value="user_id"/>
+				<app-property name="login.activity.logintime" value="login_time"/>
+				<app-property name="login.activity.login.succesful" value="login_successful"/>
+				<app-property name="login.activity.logouttime" value="logout_time"/>
+				<app-property name="login.activity.duration" value="duration"/>
+			</app-property-list>
+		</app-property-sub-module>
+
+		<!--  Et Queries -->
+		
+		<!-- TODO @Ramya can fill these --> 
+		
+		<app-property-sub-module sub-module="serviceTicketQuery">
+			<app-property-list>
+				
+			</app-property-list>
+		</app-property-sub-module>
+
+	<!-- Enviro Tracker--> 
+		<app-property-sub-module sub-module="environmentTracker">
+			<app-property-list>
+				<app-property name="service.ticket.search.ticket" value="SELECT [Expr10],[Expr11],[Expr12],[Expr13],[Expr14],[Expr15],st.[APPLICATIONID],[TRUCKID],[DRIVERID],[DRIVERTICKETNUM],[TRANSACTIONDATE],[CUSTOMERTRACKINGCV1ID],[CONTAINERCONTENTID],[HAZARDOUSCONTENTID],[GPSLATITUDE],[GPSLONGITUDE],[GPSSATELITES],[ONSITECONTACT],[WORKPERFOMEDBYID],[REQUESTEDDATE],[CUSTOMERTRACKINGCV2ID],[CUSTOMERTRACKINGCV3ID],[NOTE],ST.[COMPANYGUID],[GPSSATELLITES],[WORKORDERID],[TRANSACTIONTYPEID],[REQUESTORID],[PURCHASEORDERID],[WORKPERFORMEDBYID],[CONTACTPHONE],[Expr17],[BRANCHID],[CUSTOMERID],st.[EQUIPMENTID],[BOXPROVIDERID],[WORKTYPEID],[PROJECTID],[GPSLATITUDE_1],[GPSLONGITUDE_1],[GPSSATELLITES_1],[GPSLATITUDE_2],[GPSLONGITUDE_2],[GPSSATELLITES_2],[CUSTOMERTRACKINGCV4T],[Expr1],[Expr2],[Expr3],[Expr4],[Expr5],[Expr6],[Expr7],[Expr8],[LOCATIONL2],[LOCATIONL3],[DAMAGEYN],[NEEDSLABELYN],[LOCATIONL1],[DAMAGEDESCRIPTION],[Expr9],[LOCATIONL4],st.[id],st.[create_date],st.[last_update],st.[created_by],st.[last_updated_by],st.[deleted_by],[SERVICETICKETID],[LOCATION_PU],[LOCATIONL2_DO],[LOCATIONL3_DO],[LINER],[GROSSWEIGHT],[GROSSWEIGHTUNITID],[DELCompanyGUID],[DELIVERYDATE],[LOCATIONL4_DO],[REJECTNOTE],[REJECTED],[LOCATIONL1_DO] FROM [Envirotrack_Portal].[dbo].[vwServiceTicket_Trans] st join [dbo].[ET2_EQUIPMENT] e on st.equipmentid = e.equipmentid"/>
+				<app-property name="user.created.by" value="Self User Registration"/>
+			</app-property-list>
+		</app-property-sub-module>
+		
+		
+		<app-property-sub-module sub-module="ordersQuery">
+			<app-property-list>
+				<app-property name="basic.search.by.orderId" value="SELECT * FROM mmi_orders.t_orders where order_id = ?"/>
+				<app-property name="search.by.criteria" value="select * FROM mmi_orders.t_orders"/>
+				<app-property name="insertquery" value="INSERT INTO  mmi_orders.t_orders (customer_id, active_status, order_status, order_details, app_channel, created_by, last_updated_by, created_on, last_updated_on, customer_info, order_approval_status, order_approval_comments) values (?,?,?,?,?,?,?,?,?,?,?,?)"/>
+				<app-property name="updatequery" value="update mmi_orders.t_orders set customer_id=?, active_status=?, order_status=?, order_details=?, app_channel=?, last_updated_by=?, last_updated_on =?, order_approval_status = ?, order_approval_comments = ? where order_id = ?"/>
+				<app-property name="updatequery.approveOrReject" value="update mmi_orders.t_orders set order_approval_status=?, order_approval_comments=? where order_id IN ("/>
+				<app-property name="deletequery" value="update mmi_orders.t_orders set active_status=?, order_status=?, last_updated_by=?, last_updated_on =? where order_id = ?"/>
+			</app-property-list>
+		</app-property-sub-module>
+		
+		<app-property-sub-module sub-module="quoteContractEntityQuery">
+			<app-property-list>
+				<app-property name="basic.search.by.entityId" value="SELECT * FROM mmi_orders.t_quote_n_contracts where entity_seq_number = ?"/>
+				<app-property name="insertquery" value="INSERT INTO  mmi_orders.t_quote_n_contracts (entity_id, active_status, entity_status, app_channel, entity_type, entity_info, customer_id, created_by, created_on, last_updated_by, last_updated_on) values (?,?,?,?,?,?,?,?,?,?,?)"/>
+				<app-property name="updatequery" value="update  mmi_orders.t_quote_n_contracts set entity_id=? ,entity_status=?, app_channel=?, entity_info = ?, last_updated_by = ?,  last_updated_on =? where entity_seq_number = ?"/>
+			</app-property-list>
+		</app-property-sub-module>
+	</app-property-sub-modules-list>
+
+</xml-properties>
